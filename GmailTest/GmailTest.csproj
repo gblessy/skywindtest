@@ -67,7 +67,6 @@
   <ItemGroup>
     <Compile Include="BaseTest.cs" />
     <Compile Include="Configuration.cs" />
-    <Compile Include="CustomConditions.cs" />
     <Compile Include="GmailPage.cs" />
     <Compile Include="GmailTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -13,20 +13,25 @@ namespace GmailTest
     [TestFixture]
     public class BaseTest
     {
-        public IWebDriver driver;
-        public WebDriverWait wait;
+        private static BaseTest instance = null;
+        private IWebDriver driver;
 
-        [OneTimeSetUp]
-        public void DriverSetUp()
+        private BaseTest() { }
+
+        public IWebDriver DriverSetUp()
         {
             driver = new ChromeDriver();
-            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(4));
+            return driver;
         }
 
-        [OneTimeTearDown]
-        public void DriverTearDown()
+        public static BaseTest getDriver()
         {
-            driver.Quit();
+            if (instance == null)
+            {
+                instance = new BaseTest();
+            }
+            return instance;
         }
+        
     }
 }

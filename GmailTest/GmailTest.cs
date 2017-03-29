@@ -14,39 +14,36 @@ namespace GmailTest
 {
         using static ExpectedConditions;
 
-        namespace Selenium_PageObjects
-        {
-        using static CustomConditions;
-
             [TestFixture]
-            public class GmailTest : BaseTest
+            public class GmailTest 
+            
             {
+                private BaseTest start = BaseTest.getDriver();
+                
                 GmailPage gmailPage;
+                String subject;
 
                 [OneTimeSetUp]
                 public void Init()
                 {
-                    gmailPage = new GmailPage(driver);
+                    gmailPage = new GmailPage(start.DriverSetUp());
+                    subject = GenerateSubject();
+                    
                 }
+                
 
                 [Test]
                 public void GmailSendEmailTest()
                 {
-
-                Random random = new Random();
-                int mailRandomizer = random.Next(100);
-                 String subject = "TestEmail" + mailRandomizer;
-
-
                     gmailPage.Open();
                     gmailPage.Login(userName, password);
                     gmailPage.SendMail(userName, subject);
                     gmailPage.GoToSent();
                     gmailPage.AssertEmailIsPresent(subject);
-
+                    gmailPage.Close();
                 }
 
             }
 
         }
-    }
+    

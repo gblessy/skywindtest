@@ -10,7 +10,6 @@ using OpenQA.Selenium.Support.UI;
 namespace GmailTest
 {
     
-    using static GmailTest.CustomConditions;
     class GmailPage
     {
         IWebDriver driver;
@@ -82,6 +81,11 @@ namespace GmailTest
         internal void AssertEmailIsPresent(string subject)
         {
             wait.Until(ExpectedConditions.TextToBePresentInElementLocated(Email, subject));     
+        }
+
+        public void Close()
+        {
+            driver.Quit();
         }
 
     }
