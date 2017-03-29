@@ -16,35 +16,26 @@ namespace GmailTest
         IWebDriver driver;
         WebDriverWait wait;
 
-        [FindsBy(How = How.Id, Using = "Email")]
-        public IWebElement loginEmail;
+        By loginLocator = By.Id("Email");
 
-        [FindsBy(How = How.Id, Using = "Passwd")]
-        public IWebElement loginPassword;
+        By passwordLocator = By.Id("Passwd");
+   
+        By compose = By.XPath("//*[contains(text(), 'COMPOSE')]");
 
-        [FindsBy(How = How.XPath, Using = "//*[contains(text(), 'COMPOSE')]")]
-        public IWebElement compose;
+        By to = By.Name("to");
 
-        [FindsBy(How = How.Name, Using = "to")]
-        public IWebElement to;
+        By subjectbox = By.Name("subjectbox");
 
-        [FindsBy(How = How.Name, Using = "subjectbox")]
-        public IWebElement subjectbox;
+        By sendButton = By.XPath("//*[contains(text(), 'Send')]");
+     
+        By sentMailLink = By.XPath("//*[contains(text(), 'Sent Mail')]");
 
-        [FindsBy(How = How.XPath, Using = "//*[contains(text(), 'Send')]")]
-        public IWebElement sendButton;
-
-        [FindsBy(How = How.XPath, Using = "//*[contains(text(), 'Sent Mail')]")]
-        public IWebElement sentMailLink;
-
-        [FindsBy(How = How.CssSelector, Using = "[role = main] .zA")]
-        IList<IWebElement> Emails;
+        By Email = By.CssSelector("[role = main] .zA:nth-of-type(1)");
 
         public GmailPage(IWebDriver driver)
             {
                 this.driver = driver;
                 wait = new WebDriverWait(driver, TimeSpan.FromSeconds(4));
-                PageFactory.InitElements(driver, this);
             }
 
         public void Open()
@@ -52,32 +43,45 @@ namespace GmailTest
                 driver.Navigate().GoToUrl("http://gmail.com");
             }
 
+        public void EnterLogin(String login)
+        {
+            wait.Until(ExpectedConditions.ElementIsVisible(loginLocator));
+            driver.FindElement(loginLocator).SendKeys(login);
+            driver.FindElement(loginLocator).SendKeys(Keys.Enter);
+        }
+
+        public void EnterPassword(String passwd)
+        {
+            wait.Until(ExpectedConditions.ElementIsVisible(passwordLocator));
+            driver.FindElement(passwordLocator).SendKeys(passwd);
+            driver.FindElement(passwordLocator).SendKeys(Keys.Enter);
+        }
+
         internal void Login(String userName, String password)
         {
-            wait.Until(Visible(loginEmail)).SendKeys(userName);
-            loginEmail.SendKeys(Keys.Enter);
-
-            wait.Until(Visible(loginPassword)).SendKeys(password);
-            loginPassword.SendKeys(Keys.Enter);
-
+            EnterLogin(userName);
+            EnterPassword(password);
+           
         }
 
         internal void SendMail(string userName, string subject)
         {
-            wait.Until(Visible(compose)).Click();
-            wait.Until(Visible(to)).SendKeys(userName);
-            wait.Until(Visible(subjectbox)).SendKeys(subject);
-            wait.Until(Visible(sendButton)).Click();
+            wait.Until(ExpectedConditions.ElementIsVisible(compose)).Click();
+            wait.Until(ExpectedConditions.ElementIsVisible(to)).SendKeys(userName);
+            wait.Until(ExpectedConditions.ElementIsVisible(subjectbox)).SendKeys(subject);
+            wait.Until(ExpectedConditions.ElementIsVisible(sendButton)).Click();
+
         }
 
         internal void GoToSent()
         {
-            wait.Until(Visible(sentMailLink)).Click();
+            wait.Until(ExpectedConditions.ElementIsVisible(sentMailLink)).Click();
+    
         }
 
         internal void AssertEmailIsPresent(string subject)
         {
-            wait.Until(ListNthElementHasText(Emails, 0, subject));
+            wait.Until(ExpectedConditions.TextToBePresentInElementLocated(Email, subject));     
         }
 
     }
