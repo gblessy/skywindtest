@@ -9,8 +9,8 @@ namespace GmailTest
     public class Configuration
     {
 
-        public static String userName = "radv7vam@gmail.com";
-        public static String password = "fa1th1nGod";
+        public static String userName = "romanchenko.ann@gmail.com";
+        public static String password = "marinkaUSA1";
 
         
     }
