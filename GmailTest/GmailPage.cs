@@ -63,18 +63,28 @@ namespace GmailTest
            
         }
 
+        public void ElementClick(By element)
+        {
+            wait.Until(ExpectedConditions.ElementIsVisible(element)).Click();
+        }
+
+        public void ElementSendKeys(By element, String text)
+        {
+            wait.Until(ExpectedConditions.ElementIsVisible(element)).SendKeys(text);
+        }
+
         internal void SendMail(string userName, string subject)
         {
-            wait.Until(ExpectedConditions.ElementIsVisible(compose)).Click();
-            wait.Until(ExpectedConditions.ElementIsVisible(to)).SendKeys(userName);
-            wait.Until(ExpectedConditions.ElementIsVisible(subjectbox)).SendKeys(subject);
-            wait.Until(ExpectedConditions.ElementIsVisible(sendButton)).Click();
+            ElementClick(compose);
+            ElementSendKeys(to, userName);
+            ElementSendKeys(subjectbox, subject);
+            ElementClick(sendButton);
 
         }
 
         internal void GoToSent()
         {
-            wait.Until(ExpectedConditions.ElementIsVisible(sentMailLink)).Click();
+            ElementClick(sentMailLink);
     
         }
 
